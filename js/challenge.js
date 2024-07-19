@@ -2,7 +2,7 @@
 "use strict"; 
 
 //fuction to start the timer
-const starttimer = () => {
+const startTimer = () => {
     return setInterval(() => {
         //Get the counter element by id
         const counter = document.getElementById("counter")
@@ -14,4 +14,4 @@ const starttimer = () => {
 };
 
 //start the timer when the page loads
-let interval = starttimer
+let interval = startTimer()
