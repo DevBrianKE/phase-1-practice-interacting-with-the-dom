@@ -43,3 +43,43 @@ plus.addEventListener("click", () => {
     //increment the counter's value by1 and update the displayed text
     counter.innerText = count + 1
 })
+
+// Add event listener for the heart button to like the current counter value
+heart.addEventListener("click", () => {
+    // Get the counter element by its ID
+    const counter = document.getElementById("counter");
+    // Convert the counter's text to an integer
+    const count = parseInt(counter.innerText)
+
+    // Get the likes list element
+    const likes = document.querySelector(".likes")
+    let existingLike
+    let found = false
+
+    // Check if the current counter value has already been liked
+    for (let child of likes.children) {
+        if (parseInt(child.dataset.num) === count) {
+            existingLike = child
+            found = true
+            break
+        }
+    }
+
+    // If the current counter value has already been liked
+    if (found) {
+        // Get the current like count
+        const likeCount = parseInt(existingLike.children[0].innerText);
+        // Increment the like count and update the displayed text
+        existingLike.innerHTML = `${count} has been liked <span>${likeCount + 1}</span> times`
+    } else {
+        // Create a new list item element
+        existingLike = document.createElement("li")
+        // Set a data attribute to the current counter value
+        existingLike.setAttribute("data-num", count)
+        // Set the inner HTML to show that the counter value has been liked once
+        existingLike.innerHTML = `${count} has been liked <span>1</span> time`
+        // Append the new like element to the likes list
+        likes.appendChild(existingLike)
+    }
+});
+
