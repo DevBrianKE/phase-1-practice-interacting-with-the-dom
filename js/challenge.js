@@ -44,42 +44,69 @@ plus.addEventListener("click", () => {
     counter.innerText = count + 1
 })
 
-// Add event listener for the heart button to like the current counter value
 heart.addEventListener("click", () => {
-    // Get the counter element by its ID
     const counter = document.getElementById("counter");
+    // Get the counter element by its ID
+    const count = parseInt(counter.innerText);
     // Convert the counter's text to an integer
-    const count = parseInt(counter.innerText)
-
+    const likes = document.querySelector(".likes");
     // Get the likes list element
-    const likes = document.querySelector(".likes")
-    let existingLike
-    let found = false
+    let existingLike;
 
     // Check if the current counter value has already been liked
-    for (let child of likes.children) {
-        if (parseInt(child.dataset.num) === count) {
-            existingLike = child
-            found = true
-            break
-        }
-    }
-
-    // If the current counter value has already been liked
-    if (found) {
-        // Get the current like count
+    if ([...likes.children].map(child => parseInt(child.dataset.num)).includes(count)) {
+        existingLike = document.querySelector(`[data-num="${count}"]`);
+        // Get the existing like element for the current counter value
         const likeCount = parseInt(existingLike.children[0].innerText);
+        // Get the current like count
+        existingLike.innerHTML = `${count} has been liked <span>${likeCount + 1}</span> times`;
         // Increment the like count and update the displayed text
-        existingLike.innerHTML = `${count} has been liked <span>${likeCount + 1}</span> times`
     } else {
+        existingLike = document.createElement("li");
         // Create a new list item element
-        existingLike = document.createElement("li")
+        existingLike.setAttribute("data-num", count);
         // Set a data attribute to the current counter value
-        existingLike.setAttribute("data-num", count)
+        existingLike.innerHTML = `${count} has been liked <span>1</span> time`;
         // Set the inner HTML to show that the counter value has been liked once
-        existingLike.innerHTML = `${count} has been liked <span>1</span> time`
+        likes.appendChild(existingLike);
         // Append the new like element to the likes list
-        likes.appendChild(existingLike)
     }
 });
 
+
+// Boolean to track if the timer is currently playing
+let playing = true;
+
+// Add an event listener to the pause button for pausing or resuming the timer
+pause.addEventListener("click", () => {
+
+    // Check if the timer is currently playing
+    if (playing) {
+        // Set playing to false to indicate the timer is paused
+        playing = false;
+
+        // Clear the interval to stop the timer
+        clearInterval(interval);
+
+        // Change the button text to "resume"
+        pause.innerText = "resume";
+    } else {
+        // Set playing to true to indicate the timer is running
+        playing = true;
+
+        // Restart the timer
+        interval = startTimer();
+
+        // Change the button text to "pause"
+        pause.innerText = "pause";
+    }
+
+    // Get all button elements
+    [...document.getElementsByTagName("button")].forEach(button => {
+        // Check if the button is not the pause button
+        if (button.id !== "pause") {
+            // Disable other buttons when the timer is paused, and enable them when the timer is running
+            button.disabled = !playing;
+        }
+    });
+});
