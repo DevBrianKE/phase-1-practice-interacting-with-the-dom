@@ -13,6 +13,7 @@ const startTimer = () => {
     }, 1000) //execute every 1 seond
 };
 
+
 //start the timer when the page loads
 let interval = startTimer()
 
@@ -43,6 +44,7 @@ plus.addEventListener("click", () => {
     //increment the counter's value by1 and update the displayed text
     counter.innerText = count + 1
 })
+
 
 heart.addEventListener("click", () => {
     const counter = document.getElementById("counter");
